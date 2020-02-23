@@ -268,6 +268,7 @@ function modalTab($element) {
 function setNumeFisier(text) {
 	numeFisier = text;
 	//$('#numeFisierDiv').html(numeFisier + '<br>' + folderFisier);
+	$(document).prop('title', numeFisier);
 	$('#numeFisierDiv').text(numeFisier);
 	$('#numeFolderDiv').text(folderFisier);
 }
