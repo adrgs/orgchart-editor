@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<!--
+    Orgchart Editor. Copyright adrgs
+    mxGraph - Apache License 2.0 Copyright (c) 2016 JGraph https://github.com/jgraph/mxgraph
+    jQuery - MIT license https://jquery.org/
+-->
+<!-- <html manifest="cache.appcache"> -->
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<title>::OrganigramaGrafica::</title>-->
+    <link rel="shortcut icon" href="./Images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./Images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato" />
+    <link href="./Styles/Roboto.css" rel="stylesheet">
+    <link href="./Styles/bootstrap-paper.css" rel="stylesheet" />
+    <link href="./Styles/animate.css" rel="stylesheet" />
+    <link href="./Styles/jquery.orgchart.css" rel="stylesheet" />
+    <link href="./Styles/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="./Styles/spectrum.css" rel="stylesheet" />
+    <link href="./Styles/lightslider.css" rel="stylesheet" />
+    <link href="./Styles/style.css" rel="stylesheet" />
+    <link href="./Styles/ol.min.css" rel="stylesheet" />
+	<link href="./Styles/titlebar.css" rel="stylesheet" />
+	
+	<!-- Insert this line above script imports  -->
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	
+	<!-- Normal imports -->
+	<script src="./Scripts/jquery.min.js"></script>
+	<script src="./Scripts/jquery-ui.min.js"></script>
+	<script src="./Scripts/jquery.mockjax.min.js"></script>
+	<script src="./Scripts/38aefda1f5.js"></script>
+	<script src="./Scripts/bootstrap.min.js"></script>
+	<script src="./Scripts/jquery.contextMenu.min.js"></script>
+	<script src="./Scripts/rgbcolor.js"></script>
+	<script src="./Scripts/StackBlur.js"></script>
+	<script src="./Scripts/canvg.js"></script>
+	<script src="./Scripts/jspdf.debug.js"></script>
+	<script src="./Scripts/papaparse.min.js"></script>
+	<script src="./Scripts/spectrum.js"></script>
+	<script src="./Scripts/lightslider.js"></script>
+	<script src="./src/mxClient.js"></script>
+	<script src="./Scripts/myScript.js"></script>
+	
+	<!-- Insert this line after script imports -->
+	<script>if (window.module) module = window.module;</script>
+	
+    <!--[if IE]>
+    <style>
+        #selectFontSize {
+            padding-top:1px;
+        }
+        #inputFontSize {
+            padding-top:0px!important;
+        }
+    </style>
+    <![endif]-->
+
+</head>
+
+<body>
+    <!-- Intro -->
+    <a href="#" accesskey="z"></a>
+    <a href="#" accesskey="p"></a>
+    <a href="#" accesskey="r"></a>
+    <div id="ecranBunVenit" style="display:none">
+        <div class="jumbotron">
+            <div class="container text-center">
+                <h1 class="animated fadeInLeft">Organigrama Grafica</h1>
+                <p class="animated fadeInRight">Creeaza o organigrama grafica sau incarca una pentru a continua.</p>
+            </div>
+        </div>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-4">
+                    <div id="orgNouButon" data-ripple="rgba(255,255,255,0.2)" class="butonStart rosu animated fadeInLeft">
+                        <i class="fa fa-sitemap" aria-hidden="true"></i>
+                        <p>Creeaza o organigrama noua</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div id="incarcaDinPCButon" data-ripple="rgba(255,255,255,0.2)" class="butonStart verde animated fadeInUp">
+                        <i class="fa fa-desktop" aria-hidden="true"></i>
+                        <p>Incarca organigrama</p>
+                    </div>
+                </div>
+                <!-- <div class="col-md-4">
+                    <div id="incarcaServerButon" data-ripple="rgba(255,255,255,0.2)" class="butonStart albastru animated fadeInRight">
+                        <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                        <p>Incarca din Server</p>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <!-- Organigrama -->
+    <div class="pagina">
+
+        <div class="navbarX">
+            <ul>
+                <li>
+                    <a id="orgNouMenu" href="javascript:void(0)" data-ripple="rgba(255,255,255,0.2)"><i class="fa fa-sitemap" aria-hidden="true"></i> Creeaza o organigrama noua</a>
+                </li>
+                <li>
+                    <a id="descarcaFisier" href="javascript:void(0)" data-ripple="rgba(255,255,255,0.2)"><i class="fa fa-floppy-o" aria-hidden="true"></i> Salveaza & descarca fisierul</a>
+                </li>
+                <!-- <li>
+                    <a id="salveazaInServer" href="javascript:void(0)" data-ripple="rgba(255,255,255,0.2)"><i class="fa fa-floppy-o" aria-hidden="true"></i> Salveaza in server</a>
+                </li> -->
+                <li>
+                    <a id="incarcaDinPC" href="javascript:void(0)" data-ripple="rgba(255,255,255,0.2)"><i class="fa fa-desktop" aria-hidden="true"></i> Incarca din PC</a>
+                </li>
+                <li>
+                    <a id="incarcaDinServer" href="javascript:void(0)" data-ripple="rgba(255,255,255,0.2)"><i class="fa fa-cloud-download" aria-hidden="true"></i> Incarca din Server</a>
+                </li>
+                <li>
+                    <a id="verificareIerarhie" href="javascript:void(0)" data-ripple="rgba(255,255,255,0.2)"><i class="fa fa-book" aria-hidden="true"></i> Verifica ierarhia</a>
+                </li>
+                <li style="float:right">
+                    <a href="javascript:void(0)" data-ripple="rgba(255,255,255,0.2)" id="setariEditor" style="font-size:18px;padding-top:7px"><i class="fa fa-cog" aria-hidden="true"></i></a>
+                </li>
+                <li style="float:right">
+                    <a href="javascript:void(0)" data-ripple="rgba(255,255,255,0.2)" id="comenziRapide" style="font-size:18px;padding-top:7px"><i class="fa fa-question" aria-hidden="true"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="toolbar">
+            <a title="Edit (CTRL+E)" data-toggle="tooltipMenu" data-command='edit' href="javascript:void(0)"><i class="fa fa-edit" aria-hidden="true"></i></a>
+            <a title="Sterge elementul selectat (DELETE)" data-toggle="tooltipMenu" data-command='delete' href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+            <a style="font-size: 20px;cursor: default;">|</a>&nbsp;
+            <a title="Paste (CTRL+V)" data-toggle="tooltipMenu" data-command='paste' href="javascript:void(0)"><i class='fa fa-clipboard'></i></a>&nbsp;
+            <a title="Copy (CTRL+C)" data-toggle="tooltipMenu" data-command='copy' href="javascript:void(0)"><i class='fa fa-files-o'></i></a>&nbsp;
+            <a title="Cut (CTRL+X)" data-toggle="tooltipMenu" data-command='cut' href="javascript:void(0)"><i class='fa fa-scissors'></i></a>
+            <a style="font-size: 20px;cursor: default;">|</a>&nbsp;
+            <select title="Selecteaza fontul textului" data-toggle="tooltip" id="selectFont" class="resizeselect">
+                <option selected="selected" style="font-family:Arial" value="Arial">Arial</option>
+                <option style="font-family:Arial Narrow" value="Arial Narrow">Arial Narrow</option>
+                <option style="font-family:Calibri" value="Calibri">Calibri</option>
+                <option style="font-family:Comic Sans MS" value="Comic Sans MS">Comic Sans</option>
+                <option style="font-family:Times New Roman" value="Times New Roman">Times New Roman</option>
+                <option style="font-family:Tahoma" value="Tahoma">Tahoma</option>
+                <option style="font-family:Verdana" value="Verdana">Verdana</option>
+            </select>
+            <input title="Marimea fontului in pixeli" data-toggle="tooltipMenu" type="text" id="inputFontSize" value="12" style="width:60px" />
+            <select id="selectFontSize" style="color:transparent;width:15px">
+                <option value="999" style="display:none" selected></option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="14">14</option>
+                <option value="16">16</option>
+                <option value="18">18</option>
+                <option value="20">20</option>
+                <option value="22">22</option>
+                <option value="24">24</option>
+                <option value="26">26</option>
+                <option value="28">28</option>
+                <option value="36">36</option>
+                <option value="48">48</option>
+                <option value="72">72</option>
+            </select>
+            <a title="Mareste textul" data-toggle="tooltipMenu" data-command="plus" href="javascript:void(0)"><i class="fa fa-plus"></i></a>
+            <a title="Micsoreaza textul" data-toggle="tooltipMenu" data-command="minus" href="javascript:void(0)"><i class="fa fa-minus"></i></a>
+            <div title="Selecteaza culoarea textului" data-toggle="tooltip" class="fore-wrapper">
+                <i class='fa fa-font' style='color:rgba(90,200,250,1);'></i>
+                <div class="fontForePalette">
+                </div>
+            </div>
+            <div title="Evidentiaza textul" data-toggle="tooltip" class="back-wrapper">
+                <i class='fa fa-font' style='background:rgba(90,200,250,1);color:white'></i>
+                <div class="fontBackPalette">
+                </div>
+            </div>
+            <a title="Bold (CTRL+B)" data-toggle="tooltipMenu" href="javascript:void(0)" data-command='bold'><i class='fa fa-bold'></i></a>
+            <a title="Italic (CTRL+I)" data-toggle="tooltipMenu" href="javascript:void(0)" data-command='italic'><i class='fa fa-italic'></i></a>
+            <a title="Underline (CTRL+U)" data-toggle="tooltipMenu" href="javascript:void(0)" data-command='underline'><i class='fa fa-underline'></i></a>
+            <a style="font-size: 20px;cursor: default;">|</a>&nbsp;
+            <a title="Aliniere text stanga (CTRL+L)" data-toggle="tooltipMenu" href="javascript:void(0)" data-command='alignFontLeft'><i class='fa fa-align-left'></i></a>
+            <a title="Aliniere text mijloc (CTRL+M)" data-toggle="tooltipMenu" href="javascript:void(0)" data-command='alignFontCenter'><i class='fa fa-align-center'></i></a>
+            <a title="Aliniere text dreapta (CTRL+D)" data-toggle="tooltipMenu" href="javascript:void(0)" data-command='alignFontRight'><i class='fa fa-align-right'></i></a>
+            <a style="font-size: 20px;cursor: default;">|</a>&nbsp;
+            <div title="Selecteaza culoarea bordurii" data-toggle="tooltip" class="fore-wrapper">
+                <i class='fa fa-square-o'></i>
+                <div class="bgForePalette">
+                </div>
+            </div>
+            <div title="Selecteaza culoarea elementului" data-toggle="tooltip" class="back-wrapper">
+                <i class='fa fa-square'></i>
+                <div class="bgBackPalette">
+                </div>
+            </div>
+            <a style="font-size: 20px;cursor: default;">|</a>&nbsp;
+            <a title="Adu in fata elementul (CTRL+H)" data-toggle="tooltipMenu" href="javascript:void(0)" data-command='toFront'>
+                <img src="http://i.imgur.com/SoWEmhX.png" width="20px" />
+            </a>
+            <a title="Trimite in spate elementul (CTRL+J)" data-toggle="tooltipMenu" href="javascript:void(0)" data-command='toBack'>
+                <img src="http://i.imgur.com/yzl7Hln.png" width="20px" />
+            </a>
+            <!-- <a href="javascript:void(0)" data-command='fontName'><i class="fa fa-font"></i></a>
+                <a href="javascript:void(0)" data-command='fontSize'><i class="fa fa-text-height"></i></a> -->
+        </div>
+        <div class="pagina2t">
+            <div class="pagina2">
+                <div class="butoanestanga" style="font-size:12px">
+                    <!-- 
+                        <a href="#" data-toggle="tooltip2" title="Adauga o caseta text in organigrama." id="adaugaText"><img src="~/Images/text.gif" width="11px" /> Adauga Caseta Text</a>
+                        <br />
+                        <br /> -->
+
+
+                </div>
+                <div class="orgdiv">
+                    <div id="chart-container" style="cursor:default;z-index:1">
+                        <div id="pageBackground" style="position:absolute;background-color:#fff;outline:1px solid #ccc;width:210mm;height:297mm;z-index:-1"></div>
+                    </div>
+                </div>
+                <div id="editareCelula">
+                    <div style="min-height:100px">
+                        <span style="color:#069;font-size:16px">Elementul selectat:</span><br /> <span id="elementSelectat">Foaie de lucru</span> <br /> <br />
+                    </div>
+                    <span style="color:#069;font-size:16px">Stil Default</span><br />
+                    <div id="stilDefault" class="cutieStil" style="background-color:white;border:1px solid #000000">
+                        <span class="textStil" style="color:#000000">T</span>
+                    </div><br />
+                    <span style="color:#069;font-size:16px">Lista de stiluri</span><br />
+                    <ul id="listaStiluri">
+                        <li>
+                            <div class="cutieStil" style="background-color:white;border:1px solid #000000">
+                                <span class="textStil" style="color:#000000">T</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="cutieStil" style="background-color:#FFDCFF;border:1px solid #000000">
+                                <span class="textStil" style="color:#000000">T</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="cutieStil" style="background-color:#D2FFA5;border:1px solid #000000">
+                                <span class="textStil" style="color:#000000">T</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="cutieStil" style="background-color:#CCFFFF;border:1px solid #000000">
+                                <span class="textStil" style="color:#000000">T</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="cutieStil" style="background-color:#cc3366;border:1px solid #cc3366">
+                                <span class="textStil" style="color:#ffffff">T</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="cutieStil" style="background-color:#009933;border:1px solid #009933">
+                                <span class="textStil" style="color:#ffffff">T</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="cutieStil" style="background-color:#006699;border:1px solid #006699">
+                                <span class="textStil" style="color:#ffffff">T</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <button class="btnSpecial controaleSlider" data-ripple style="float:right" id="controlDreapta">></button> <button class="btnSpecial controaleSlider" data-ripple id="controlStanga"><</button><br />
+                    <div id="showStil" style="display:none;">
+                        <div class="elementStil">
+                            <span style="color:#069;font-size:16px">Stil element</span><br />
+                            Culoare de fundal <br />
+                            <input type="text" class="stilColorInput" id="inputBgColor" /> <br />
+                            Culoare text <br />
+                            <input type="text" class="stilColorInput" id="inputTextColor" /> <br />
+                        </div>
+                        <span style="color:#069;font-size:16px">Contur element</span><br />
+                        Culoare contur<br />
+                        <input type="text" class="stilColorInput" id="inputBorderColor" /><br />
+                        <!-- Grosime contur<br />
+                        <select>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                        </select> <br />
+                        Model contur<br />
+                        <select>
+                            <option>Normal</option>
+                            <option>Serpuit</option>
+                            <option>Punctat</option>
+                            <option>Special</option>
+                        </select> <br /> -->
+                        <br />
+                        <div class="elementStil">
+                            <button class="btnSpecial" data-ripple style="width:85px" id="copiazaStil">Copiaza </button><button class="btnSpecial" data-ripple="rgba(255,255,255,0.2)" id="lipesteStil">Lipeste stil</button><br />
+                            <button class="btnSpecial" style="width:100%" data-ripple id="adaugaStil">Adauga la lista de stiluri</button><br />
+                            <button class="btnSpecial" style="width:100%" data-ripple id="salveazaStilDefault">Salveaza ca stil default</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="optiunibutoane">
+
+                    <ul>
+                        <!-- 
+                            <li><a id="btn-portrait" href="#" data-toggle="tooltip" title="Schimba dimensiunea spatiului de lucru intr-o foaie A4 pe verticala."><i class="fa fa-file-o" aria-hidden="true"></i><br />Portrait</a>
+                            </li>
+                            <li><a id="btn-landscape" href="#" data-toggle="tooltip" title="Schimba dimensiunea spatiului de lucru intr-o foaie A4 pe orizontala."><i class="fa fa-file-o" aria-hidden="true"></i><br />Landscape</a>
+                            </li>
+                            <li><a id="btn-grid" href="#" data-toggle="tooltip" title="Schimba spatiul de lucru intr-un grid."><i class="fa fa-th" aria-hidden="true"></i><br />Grid</a>
+                            </li> -->
+                        <li>
+                            <a id="btnUndo" href="javascript:void(0)" data-toggle="tooltip" title="Repara ultima greseala facuta asupra organigramei. (CTRL+Z)"><i class="fa fa-undo fa-2" aria-hidden="true"></i><br />Undo</a>
+                        </li>
+                        <li>
+                            <a id="btnRedo" href="javascript:void(0)" data-toggle="tooltip" title="Repara ultimul undo facut asupra organigramei. (CTRL+R)"><i class="fa fa-repeat fa-2" aria-hidden="true"></i><br />Redo</a>
+                        </li>
+                        <li>
+                            <a id="btnZoomIn" href="javascript:void(0)" data-toggle="tooltip" title="Mareste elementele organigramei. (CTRL+ROTITA MOUSE SUS)"><i class="fa fa-search-plus"></i><br />Mareste</a>
+                        </li>
+                        <li>
+                            <a id="btnZoomOut" href="javascript:void(0)" data-toggle="tooltip" title="Micsoreaza elementele organigramei. (CTRL+ROTITA MOUSE JOS)"><i class="fa fa-search-minus"><br />Micsoreaza</i></a>
+                        </li>
+                        <li>
+                            <a id="btnZoomInitial" href="javascript:void(0)" data-toggle="tooltip" title="Reseteaza zoom-ul la 100%, valoarea de baza.(CTRL+BUTON ROTITA MOUSE)"><i class="fa fa-search"></i><br />Mareste la nivelul initial</a>
+                        </li>
+                        <li>
+                            <a id="btnPrint" href="javascript:void(0)" data-toggle="tooltip" title="Deschide preview-ul de printare. (CTRL+P)"><i class="fa fa-print fa-2"></i><br />Print</a>
+                        </li>
+                        <li>
+                            <a id="btnPosturi" href="javascript:void(0)" data-toggle="tooltip" title="Deschide vizualizarea de posturi si ocupanti. (CTRL+A)"><i class="fa fa-database fa-2"></i><br />Vizualizare posturi si ocupanti</a>
+                        </li>
+                        <!-- 
+                            <li><a id="btn-fullscreen" href="#" data-toggle="tooltip" title="Intra in mod fullscreen(editor)."><i class="fa fa-arrows-alt"></i><br />Fullscreen editor</a>
+                            </li>
+                            <li><a id="btn-fullscreen-org" href="#" data-toggle="tooltip" title="Intra in mod fullscreen(organigrama)."><i class="fa fa-arrows-alt"></i><br />Fullscreen organigrama</a>
+                            </li> -->
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <!-- Modaluri -->
+        <div id="modalOrgNou" class="modal">
+            <div class="vertical-alignment-helper">
+                <div class="vertical-align-center">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="$('.modal').css('display', 'none');">&times;</button>
+                                <h4 class="modal-title">Creeaza o organigrama noua</h4>
+                            </div>
+                            <div class="modal-body" style="text-align:center">
+                                <span style="font-size:14px">Numele organigramei</span>
+                                <br />
+                                <input type="text" id="numeProiect" style="width:80%" placeholder="Introduceti numele organigramei" />
+                                <br />
+                                <br />
+                                <span style="font-size:14px">Marime pagina</span>
+                                <br />
+                                <select id="marimePagina">
+                                    <option value="A2">A2 (420mm x 594mm)</option>
+                                    <option value="A3">A3 (297mm x 420mm)</option>
+                                    <option selected="selected" value="A4">A4 (210mm x 297mm)</option>
+                                    <option value="A5">A5 (148mm x 210mm)</option>
+                                    <option value="LETTER">US Letter (216mm x 279mm)</option>
+                                </select>
+                                <br />
+                                <br />
+                                <span style="font-size:14px">Mod pagina</span>
+                                <br />
+                                <label>
+                                    <input type="radio" name="modPagina" value="1" checked="checked" />Portrait
+                                </label>
+                                <label>
+                                    <input type="radio" name="modPagina" value="0" />Landscape
+                                </label>
+                                <br />
+                                <span style="font-size:14px">Conectori</span>
+                                <br />
+                                <label>
+                                    <input type="radio" name="propConectori" value="1" />Statici
+                                </label>
+                                <label>
+                                    <input type="radio" name="propConectori" value="0" checked="checked"/>Dinamici
+                                </label>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="creeazaOrganigrama" type="button" class="btn btn-primary actiune">Creeaza organigrama</button>
+                                <button type="button" onclick="$('.modal').css('display', 'none');" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalIncarcaDinPC" class="modal">
+            <div class="vertical-alignment-helper">
+                <div class="vertical-align-center">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="$('.modal').css('display', 'none');">&times;</button>
+                                <h4 class="modal-title">Incarca din PC</h4>
+                            </div>
+                            <div class="modal-body" style="text-align:center">
+                                <input type="file" accept=".ogg" id="inputFisier" />
+                                <label for="inputFisier" style="width: 100%;cursor: pointer;">
+                                    <div class="dropZone">
+                                        <i class="fa fa-folder-open"></i> Click sau Trage un fisier aici !
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="modal-footer">
+                                <!-- 
+                                    <button type="button" onclick="$('.modal').css('display', 'none');" class="btn btn-primary actiune">Incarca organigrama</button>
+                                    <button type="button" onclick="$('.modal').css('display', 'none');" class="btn btn-default cancel">Cancel</button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalServer" class="modal">
+            <div class="vertical-alignment-helper">
+                <div class="vertical-align-center">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="$('.modal').css('display', 'none');">&times;</button>
+                                <h4 class="modal-title" id="modalServerTitlu">Incarca din Server</h4>
+                            </div>
+                            <div class="modal-body" style="text-align:left">
+                                <div class="fileBrowser">
+                                    <div style="margin-bottom:15px">
+                                        Nume <span style="float:right">Ultima modificare</span>
+                                    </div>
+                                    <div id="rezultateServer"></div>
+                                </div>
+                                <div class="salveazaForm" style="display:none">
+                                    Numele fisierului:
+                                    <br />
+                                    <input type="text" id="serverNumeFisier" style="width:80%" placeholder="Introdu numele fisierului, fisierele cu aceleasi nume vor fi rescrise" />
+                                    <br />
+                                    <br /> Folder fisier:
+                                    <br />
+                                    <input type="text" id="serverNumeFolder" style="width:80%" placeholder="Introdu numele folderului, daca acesta nu exista va fi creat" />
+                                    <br />
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="butonIncarcaDinServer" type="button" class="btn btn-primary actiune">Incarca organigrama</button>
+                                <button id="submitSalveazaInServer" type="button" class="btn btn-primary actiune" style="display:none">Salveaza fisierul</button>
+                                <button type="button" onclick="$('.modal').css('display', 'none');" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalSetariEditor" class="modal">
+            <div class="vertical-alignment-helper">
+                <div class="vertical-align-center">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="$('.modal').css('display', 'none');">&times;</button>
+                                <h4 class="modal-title">Schimba setarile</h4>
+                            </div>
+                            <div class="modal-header" style="padding:15px;background-color:white">
+                                <h4 class="modal-title" style="color:#069">Setari Editor</h4>
+                            </div>
+                            <div class="modal-body">
+                                <input type="checkbox" id="cbAlerta" />
+                                <label for="cbAlerta"> Functie de alerta</label>
+                            </div>
+                            <div class="modal-header" style="padding:15px;background-color:white">
+                                <h4 class="modal-title" style="color:#069">Setari Organigrama</h4>
+                            </div>
+                            <div class="modal-body">
+                                <span style="font-size:14px" placeholder="Introduceti numele organigramei">Numele organigramei</span>
+                                <br />
+                                <input type="text" id="setariNumeProiect" style="width:50%" />
+                                <br />
+                                <br />
+                                <span style="font-size:14px">Marime pagina</span>
+                                <br />
+                                <select id="setariMarimePagina" style="width:50%">
+                                    <option value="A2">A2 (420mm x 594mm)</option>
+                                    <option value="A3">A3 (297mm x 420mm)</option>
+                                    <option value="A4">A4 (210mm x 297mm)</option>
+                                    <option value="A5">A5 (148mm x 210mm)</option>
+                                    <option value="LETTER">US Letter (216mm x 279mm)</option>
+                                </select>
+                                <br />
+                                <br />
+                                <span style="font-size:14px">Mod pagina</span>
+                                <br />
+                                <label>
+                                    <input type="radio" name="setariModPagina" value="1" checked="checked" />Portrait
+                                </label>
+                                <label>
+                                    <input type="radio" name="setariModPagina" value="0" />Landscape
+                                </label>
+                                <br />
+                                <span style="font-size:14px">Conectori</span>
+                                <br />
+                                <label>
+                                    <input type="radio" name="setariPropConectori" value="1" checked="checked" />Statici
+                                </label>
+                                <label>
+                                    <input type="radio" name="setariPropConectori" value="0" />Dinamici
+                                </label>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="salveazaSetariEditor" type="button" class="btn btn-primary actiune">Salveaza modificarile</button>
+                                <button type="button" onclick="$('.modal').css('display', 'none');" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalComenziRapide" class="modal">
+            <div class="vertical-alignment-helper">
+                <div class="vertical-align-center">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="$('.modal').css('display', 'none');">&times;</button>
+                                <h4 class="modal-title">Comenzi Rapide (hotkeys) :</h4>
+                            </div>
+                            <div class="modal-body">
+                                CTRL+Z - Undo
+                                <br /> CTRL+R - Redo
+                                <br />
+                                <br /> CTRL+X - Cut
+                                <br /> CTRL+C - Copy
+                                <br /> CTRL+V - Paste
+                                <br />
+                                <br /> CTRL+A - Deschide posturi si ocupanti
+                                <br />
+                                <br /> CTRL+L - Aliniaza text stanga
+                                <br /> CTRL+M - Aliniiaza text mijloc
+                                <br /> CTRL+D - Aliniaza text dreapta
+                                <br />
+                                <br /> CTRL+J - Trimite in spate elementul
+                                <br /> CTRL+H - Adu in fata elementul
+                                <br />
+                                <br /> CTRL+E - Edit
+                                <br /> CTRL+B - Bold text
+                                <br /> CTRL+I - Italic text
+                                <br /> CTRL+U - Underline text
+                                <br />
+                                <br /> ALT+Rotita sus - Zoom +
+                                <br /> ALT+Rotita jos - Zoom -
+                                <br /> ALT+Buton rotita mijloc - Zoom 100%
+                                <br />
+                                <br /> CTRL+Q - Organigrama Noua
+                                <br /> CTRL+S - Salveaza Organigrama (PC)
+                                <br /> CTRL+O - Incarca Organigrama (PC)
+                                <br /> CTRL+P - Print
+                                <br />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" onclick="$('.modal').css('display', 'none');" class="btn btn-default cancel">Inchide</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalConfirm" class="modal" style="z-index:10000;background-color:transparent">
+            <div class="vertical-alignment-helper">
+                <div class="vertical-align-center">
+                    <div class="modal-dialog">
+                        <div class="modal-content" id="modalContentConfirm">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="$('.modal').css('display', 'none'); $('.modal-content').css('display', 'block'); $('#nuArata').prop('checked', false);">&times;</button>
+                                <h4 class="modal-title">Atentie !</h4>
+                            </div>
+                            <div class="modal-body">
+                                Modificarile nesalvate vor fi sterse! Esti sigur ca vrei sa continui?
+                                <br />
+                                <br />
+                                <input id="nuArata" type="checkbox" />
+                                <label for="nuArata">Nu mai arata aceasta caseta.</label>
+                                <i data-toggle="tooltipMenu" title="Optiunea poate fi reactivata din setari." style="margin-left:10px">?</i>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="confirmOk" onclick="$('#modalConfirm').css('display', 'none');$('.modal-content').css('display','block')" type="button" class="btn btn-primary actiune">Ok</button>
+                                <button type="button" onclick="$('.modal').css('display', 'none'); $('.modal-content').css('display', 'block'); $('#nuArata').prop('checked', false);" class="btn btn-default cancel">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalNumeFisier" class="modal">
+            <div class="vertical-alignment-helper">
+                <div class="vertical-align-center">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="$('.modal').css('display', 'none');">&times;</button>
+                                <h4 class="modal-title">Salveaza fisierul in PC</h4>
+                            </div>
+                            <div class="modal-body" style="text-align:center">
+                                Numele fisierului:
+                                <br />
+                                <input type="text" id="numeFisier" style="width:80%" placeholder="Introduceti numele fisierului pentru download" />
+                                <br />
+                                <br /> <!-- 
+                                    <input type="checkbox" id="salvareCuParola" />
+                                    <label for="salvareParola">Salvare cu parola</label>
+                                    <br />
+                                    <input type="password" id="inputFisierParola" style="display:none" /> -->
+                            </div>
+                            <div class="modal-footer">
+                                <button id="submitFisier" type="button" class="btn btn-primary actiune">Salveaza fisierul</button>
+                                <button type="button" onclick="$('.modal').css('display', 'none');" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalConfirmServer" class="modal">
+            <div class="vertical-alignment-helper">
+                <div class="vertical-align-center">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="$('#modalConfirmServer').css('display', 'none');">&times;</button>
+                                <h4 class="modal-title">Confirm salvare in server</h4>
+                            </div>
+                            <div class="modal-body" style="text-align:center">
+                                Exista deja un fisier cu acest nume in server.
+                                <br /> Acest fisier va fi rescris, esti sigur ca vrei sa continui?
+                            </div>
+                            <div class="modal-footer">
+                                <button id="submitRescrieFisier" type="button" class="btn btn-primary actiune">Rescrie fisierul</button>
+                                <button type="button" onclick="$('#modalConfirmServer').css('display', 'none');" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalPostNou" class="modal">
+            <div class="vertical-alignment-helper">
+                <div class="vertical-align-center">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="$('.modal').css('display', 'none');">&times;</button>
+                                <h5 class="modal-title" id="ap">Adaugare de post nou pentru <br />"<span id="numeEOG"></span>"</h5>
+                                <h5 class="modal-title" id="mp">Modifica postul<br />"<span id="numeEOGP"></span>"</h5>
+                            </div>
+                            <div class="modal-body" style="text-align:center">
+                                Numele postului: *
+                                <br />
+                                <input type="text" id="numePost" style="width:80%" placeholder="Introduceti numele postului" />
+                                <br />
+                                <br /> Atributele postului:
+                                <br />
+                                <textarea id="atributePost" style="max-width:80%;width:80%" placeholder="Introduceti atributele postului, daca exista"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="submitPost" type="button" class="btn btn-primary actiune">Adauga postul</button>
+                                <button id="submitModificaPost" type="button" class="btn btn-primary actiune" style="display:none">Modifica postul</button>
+                                <button type="button" onclick="$('.modal').css('display', 'none');" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalAngajatNou" class="modal">
+            <div class="vertical-alignment-helper">
+                <div class="vertical-align-center">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="$('.modal').css('display', 'none');">&times;</button>
+                                <h5 class="modal-title" id="aa">Adauga angajat pentru postul de <br />"<span id="numePostAngajat"></span>" al institutiei <br /> "<span id="numeEOGAngajat"></span>"</h5>
+                                <h5 class="modal-title" id="ma">Modifica angajat <br />"<span id="numeModificaPostAngajat"></span>"</h5>
+                            </div>
+                            <div class="modal-body" style="text-align:center">
+                                Numele angajatului: *
+                                <br />
+                                <input type="text" id="numeAngajat" style="width:80%" placeholder="Introduceti numele angajatului" />
+                                <br />
+                                <br /> Alte date:
+                                <br />
+                                <textarea id="dateAngajat" style="max-width:80%;width:80%" placeholder="Introduceti alte date despre angajat"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="submitAngajat" type="button" class="btn btn-primary actiune">Adauga angajatul</button>
+                                <button id="submitModificaAngajat" type="button" class="btn btn-primary actiune" style="display:none">Modifica angajatul</button>
+                                <button type="button" onclick="$('.modal').css('display', 'none');" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalPrint" class="modal">
+            <div class="vertical-alignment-helper">
+                <div class="vertical-align-center">
+                    <div class="modal-dialog" style="width:600px">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="$('.modal').css('display', 'none');">&times;</button>
+                                <h4 class="modal-title">Print</h4>
+                            </div>
+                            <div class="modal-body" style="text-align:center">
+                                <div class="row">
+                                    <div class="col-md-6" id="pdfPrint">
+                                        <i class="fa fa-file-pdf-o fa-2x" aria-hidden="true" style="font-size:100px"></i>
+                                        <br />
+                                        <br />
+                                        <p>Deschide un fisier .pdf cu continutul organigramei pentru a fi printat. Pentru printare se va folosi programul de deschidere al documentului pdf.</p>
+                                    </div>
+                                    <div class="col-md-6" id="htmlPrint">
+                                        <i class="fa fa-html5 fa-2x" aria-hidden="true" style="font-size:100px"></i>
+                                        <br />
+                                        <br />
+                                        <p>Deschide o fereastra noua html cu previewul de printare. Pentru printare se va folosi browserul.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalSucces" style="position:absolute;width:40%;left:30%;top:90%;z-index:100000;display:none" class="alert alert-success">
+            <button type="button" onclick="$('.alert').css('display', 'none');" class="close" style="color:white;margin-top:-5px">&times;</button>
+            <strong>Succes!</strong>
+            <p id="pSucces" style="display:inline"></p>
+        </div>
+        <div id="modalEroare" style="position:absolute;width:40%;left:30%;top:90%;z-index:100000;display:none" class="alert alert-danger">
+            <button type="button" onclick="$('.alert').css('display', 'none');" class="close" style="color:white;margin-top:-5px">&times;</button>
+            <strong>Eroare!</strong>
+            <p id="pEroare" style="display:inline"></p>
+        </div>
+        <div id="inchideFullscreen"></div>
+        <div id="zoomCounter"></div>
+        <div id="numeFisierDiv"></div>
+        <div id="numeFolderDiv"></div>
+        <canvas id="canvas"></canvas>
+    </div>
+    <!-- Posturi -->
+    <div style="background-color:#F2F2F2;width:100%;height:900px"></div>
+    <div id="windowPosturiExemplu">
+        <div class="windowHeader">
+            <div style="color:white;line-height:30px;margin-left:5px;margin-right: 5px;">
+                <span class="commandWindow redX" title="Close" data-toggle="tooltipWindow" onclick="windowPosturiClose(this);"><i class="fa fa-window-close windowPosturiClose"></i></span>
+                <span class="commandWindow" title="Maximize/Restore" data-toggle="tooltipWindow" onclick="windowPosturiMaximize(this);"><i class="fa fa-window-maximize windowPosturiMaximize"></i></span>
+                <span class="commandWindow" title="Minimize" data-toggle="tooltipWindow" onclick="windowPosturiMinimize(this);"><i class="fa fa-window-minimize windowPosturiMinimize"></i></span>
+                <i class="fa fa-database" aria-hidden="true" style="margin-right: 4px;cursor: inherit;"></i><span class="textNav">Vizualizare posturi si ocupanti</span>
+            </div>
+        </div>
+        <div class="windowBody">
+            <div class="windowStatic" style="border-bottom:1px solid #ccc">
+                <button tabindex="-1" class="postNou" onclick="postNou(this);">Adauga un post nou</button>
+                <!-- 
+                    <button class="salvModificari" onclick="salvModificari(this);">Salveaza modificarile</button> -->
+            </div>
+            <div class="windowDinamic" style="overflow:auto;max-height:220px">
+            </div>
+        </div>
+    </div>
+    <!-- PDF -->
+    <iframe id="pdfDownloadFrame" style="display:none"></iframe>
+</body>
+
+</html>
